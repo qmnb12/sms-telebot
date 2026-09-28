@@ -264,6 +264,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settings_forwardCalls => 'Eingehende Anrufe';
 
   @override
+  String get settings_forwardPushes => 'Push-Benachrichtigungen';
+
+  @override
   String get settings_notifyLowBattery => 'Niedriger Akkustand';
 
   @override
@@ -298,6 +301,25 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settings_deviceLabelInfo => 'Standard: keine Bezeichnung';
+
+  @override
+  String get pushed_apps => 'Anwendungen';
+
+  @override
+  String get pushed_search => 'Suche';
+
+  @override
+  String pushed_total(Object count) {
+    return 'Gesamt: $count';
+  }
+
+  @override
+  String pushed_selected(Object count) {
+    return 'Ausgewählt: $count';
+  }
+
+  @override
+  String get pushed_notFound => 'Apps nicht gefunden';
 
   @override
   String get help_about => 'Über';

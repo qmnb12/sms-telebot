@@ -604,6 +604,12 @@ abstract class AppLocalizations {
   /// **'Incoming calls'**
   String get settings_forwardCalls;
 
+  /// No description provided for @settings_forwardPushes.
+  ///
+  /// In en, this message translates to:
+  /// **'Push notifications'**
+  String get settings_forwardPushes;
+
   /// No description provided for @settings_notifyLowBattery.
   ///
   /// In en, this message translates to:
@@ -675,6 +681,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Default: no label'**
   String get settings_deviceLabelInfo;
+
+  /// No description provided for @pushed_apps.
+  ///
+  /// In en, this message translates to:
+  /// **'Applications'**
+  String get pushed_apps;
+
+  /// No description provided for @pushed_search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get pushed_search;
+
+  /// No description provided for @pushed_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total: {count}'**
+  String pushed_total(Object count);
+
+  /// No description provided for @pushed_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected: {count}'**
+  String pushed_selected(Object count);
+
+  /// No description provided for @pushed_notFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Apps not found'**
+  String get pushed_notFound;
 
   /// No description provided for @help_about.
   ///

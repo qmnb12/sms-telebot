@@ -260,6 +260,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settings_forwardCalls => '着信通話';
 
   @override
+  String get settings_forwardPushes => 'プッシュ通知';
+
+  @override
   String get settings_notifyLowBattery => 'バッテリー残量低下';
 
   @override
@@ -294,6 +297,25 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get settings_deviceLabelInfo => 'デフォルト: ラベルなし';
+
+  @override
+  String get pushed_apps => 'アプリ';
+
+  @override
+  String get pushed_search => '検索';
+
+  @override
+  String pushed_total(Object count) {
+    return '合計:$count';
+  }
+
+  @override
+  String pushed_selected(Object count) {
+    return '選択済み:$count';
+  }
+
+  @override
+  String get pushed_notFound => 'アプリが見つかりません';
 
   @override
   String get help_about => 'このアプリについて';

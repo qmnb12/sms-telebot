@@ -261,6 +261,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_forwardCalls => 'Incoming calls';
 
   @override
+  String get settings_forwardPushes => 'Push notifications';
+
+  @override
   String get settings_notifyLowBattery => 'Low battery';
 
   @override
@@ -295,6 +298,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_deviceLabelInfo => 'Default: no label';
+
+  @override
+  String get pushed_apps => 'Applications';
+
+  @override
+  String get pushed_search => 'Search';
+
+  @override
+  String pushed_total(Object count) {
+    return 'Total: $count';
+  }
+
+  @override
+  String pushed_selected(Object count) {
+    return 'Selected: $count';
+  }
+
+  @override
+  String get pushed_notFound => 'Apps not found';
 
   @override
   String get help_about => 'About';

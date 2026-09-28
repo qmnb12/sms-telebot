@@ -262,6 +262,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get settings_forwardCalls => 'Входящие звонки';
 
   @override
+  String get settings_forwardPushes => 'Пуш-уведомления';
+
+  @override
   String get settings_notifyLowBattery => 'Низкий заряд батареи';
 
   @override
@@ -296,6 +299,25 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get settings_deviceLabelInfo => 'По умолчанию: без метки';
+
+  @override
+  String get pushed_apps => 'Приложения';
+
+  @override
+  String get pushed_search => 'Поиск';
+
+  @override
+  String pushed_total(Object count) {
+    return 'Всего: $count';
+  }
+
+  @override
+  String pushed_selected(Object count) {
+    return 'Выбрано: $count';
+  }
+
+  @override
+  String get pushed_notFound => 'Приложения не найдены';
 
   @override
   String get help_about => 'О приложении';

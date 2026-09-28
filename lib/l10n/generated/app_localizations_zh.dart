@@ -259,6 +259,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_forwardCalls => '来电';
 
   @override
+  String get settings_forwardPushes => '推送通知';
+
+  @override
   String get settings_notifyLowBattery => '电量低';
 
   @override
@@ -293,6 +296,25 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get settings_deviceLabelInfo => '默认：无标签';
+
+  @override
+  String get pushed_apps => '应用';
+
+  @override
+  String get pushed_search => '搜索';
+
+  @override
+  String pushed_total(Object count) {
+    return '总数:$count';
+  }
+
+  @override
+  String pushed_selected(Object count) {
+    return '已选:$count';
+  }
+
+  @override
+  String get pushed_notFound => '未找到应用';
 
   @override
   String get help_about => '关于';

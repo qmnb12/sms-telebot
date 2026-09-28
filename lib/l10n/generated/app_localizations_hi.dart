@@ -262,6 +262,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get settings_forwardCalls => 'इनकमिंग कॉल';
 
   @override
+  String get settings_forwardPushes => 'पुश सूचनाएं';
+
+  @override
   String get settings_notifyLowBattery => 'बैटरी कम';
 
   @override
@@ -296,6 +299,25 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get settings_deviceLabelInfo => 'डिफ़ॉल्ट: कोई लेबल नहीं';
+
+  @override
+  String get pushed_apps => 'ऐप्स';
+
+  @override
+  String get pushed_search => 'खोजें';
+
+  @override
+  String pushed_total(Object count) {
+    return 'कुल: $count';
+  }
+
+  @override
+  String pushed_selected(Object count) {
+    return 'चुने गए: $count';
+  }
+
+  @override
+  String get pushed_notFound => 'ऐप्स नहीं मिले';
 
   @override
   String get help_about => 'ऐप के बारे में';
