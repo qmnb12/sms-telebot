@@ -119,6 +119,8 @@ class MainDb {
       'isRunning': '0',
       'forwardSms': '0',
       'forwardCalls': '0',
+      'forwardPushes': '0',
+      'pushedAppsJson': '',
       'notifyLowBattery': '0',
       'notifyChargerState': '0',
       'enableForeground': '0',
@@ -302,5 +304,5 @@ class MainDb {
     await db.update(
       'messages_history', {'status': 1}, where: 'status = ?', whereArgs: [2],
     );
-  } 
+  }
 }

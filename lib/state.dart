@@ -17,6 +17,8 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   // App settings
   bool forwardSms = false;
   bool forwardCalls = false;
+  bool forwardPushes = false;
+  String pushedAppsJson = '';
   bool notifyLowBattery = false;
   bool notifyChargerState = false;
   bool enableForeground = false;
@@ -86,7 +88,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     notifyListeners();
     _stopStatsPolling();
     stopWorkersNative();
-    stopForegroundServiceNative();    
+    stopForegroundServiceNative();
     await MainDb.instance.saveBoolSetting('isRunning', false);
     await MainDb.instance.resetRetryStatus();
   }
@@ -111,6 +113,8 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     isRunning = settings['isRunning'] == '1';
     forwardSms = settings['forwardSms'] == '1';
     forwardCalls = settings['forwardCalls'] == '1';
+    forwardPushes = settings['forwardPushes'] == '1';
+    pushedAppsJson = settings['pushedAppsJson'] ?? '';
     notifyLowBattery = settings['notifyLowBattery'] == '1';
     notifyChargerState = settings['notifyChargerState'] == '1';
     enableForeground = settings['enableForeground'] == '1';
@@ -305,6 +309,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   Future<CallResult> updateSettings({
     required bool forwardSms,
     required bool forwardCalls,
+    required bool forwardPushes,
     required bool notifyLowBattery,
     required bool notifyChargerState,
     required bool enableForeground,
@@ -315,6 +320,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     final settingsPayload = {
       'forwardSms': forwardSms ? '1' : '0',
       'forwardCalls': forwardCalls ? '1' : '0',
+      'forwardPushes': forwardPushes ? '1' : '0',
       'notifyLowBattery': notifyLowBattery ? '1' : '0',
       'notifyChargerState': notifyChargerState ? '1' : '0',
       'enableForeground': enableForeground ? '1' : '0',
@@ -326,6 +332,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
 
     this.forwardSms = forwardSms;
     this.forwardCalls = forwardCalls;
+    this.forwardPushes = forwardPushes;
     this.notifyLowBattery = notifyLowBattery;
     this.notifyChargerState = notifyChargerState;
     this.enableForeground = enableForeground;
@@ -333,6 +340,13 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     this.customFormatJson = customFormatJson;
     this.deviceLabel = deviceLabel;
 
+    notifyListeners();
+    return okResult();
+  }
+
+  Future<CallResult> updatePushedApps(String json) async {
+    pushedAppsJson = json;
+    await MainDb.instance.saveSetting('pushedAppsJson', json);
     notifyListeners();
     return okResult();
   }

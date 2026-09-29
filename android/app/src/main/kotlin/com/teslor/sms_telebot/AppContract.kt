@@ -383,7 +383,7 @@ object AppLog {
         if (!dir.exists() && !dir.mkdirs()) return
         val activeFile = File(dir, "app.log")
         val bytes = line.toByteArray(Charsets.UTF_8)
-        
+
         // Rotate log files if the active file exceeds 512KB
         if (activeFile.length() + bytes.size > 512 * 1024L) {
             File(dir, "app.prev.log").delete()

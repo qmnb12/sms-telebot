@@ -8,6 +8,7 @@ import '../styles.dart';
 import '../state.dart';
 import '../service.dart';
 import '../widgets/action_button.dart';
+import 'pushed_apps_page.dart';
 
 enum _FormatMenuAction { paste, preview, reset }
 
@@ -18,7 +19,7 @@ class SettingsPage extends StatefulWidget {
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver {
   static const EdgeInsets _switchTilePadding = EdgeInsets.fromLTRB(13, 0, 10, 1);
   static const TextStyle _switchStyle = TextStyle(height: 1.2);
 
@@ -26,6 +27,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   bool _forwardSms = false;
   bool _forwardCalls = false;
+  bool _forwardPushes = false;
   bool _notifyLowBattery = false;
   bool _notifyChargerState = false;
   bool _enableForeground = false;
@@ -34,16 +36,36 @@ class _SettingsPageState extends State<SettingsPage> {
   String _currentFormatName = '';
 
   bool _isInputChanged = false;
+  bool _waitingForPushPermission = false;
   bool? _saveResult;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (_waitingForPushPermission && state == AppLifecycleState.resumed) {
+      _waitingForPushPermission = false;
+      _checkPushPermissionOnResume();
+    }
+  }
+
+  Future<void> _checkPushPermissionOnResume() async {
+    if (!await getNotificationListenerPermission() || _forwardPushes) return;
+    setState(() {
+      _forwardPushes = true;
+      _saveResult = null;
+      _isInputChanged = true;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     final appState = context.read<AppState>();
 
     _deviceLabelController = TextEditingController(text: appState.deviceLabel);
     _forwardSms = appState.forwardSms;
     _forwardCalls = appState.forwardCalls;
+    _forwardPushes = appState.forwardPushes;
     _notifyLowBattery = appState.notifyLowBattery;
     _notifyChargerState = appState.notifyChargerState;
     _enableForeground = appState.enableForeground;
@@ -54,6 +76,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _deviceLabelController.dispose();
     super.dispose();
   }
@@ -72,6 +95,7 @@ class _SettingsPageState extends State<SettingsPage> {
     await appState.updateSettings(
       forwardSms: _forwardSms,
       forwardCalls: _forwardCalls,
+      forwardPushes: _forwardPushes,
       notifyLowBattery: _notifyLowBattery,
       notifyChargerState: _notifyChargerState,
       enableForeground: _enableForeground,
@@ -90,13 +114,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
   String _getFormatName() {
     if (_customFormatJson.isEmpty) return '';
-    try {
-      final parsed = jsonDecode(_customFormatJson);
-      if (parsed is Map<String, dynamic>) {
-        final name = parsed['name']?.toString().trim() ?? '';
-        if (name.isNotEmpty) return name;
-      }
-    } catch (_) {}
+    final parsed = safeDecode(_customFormatJson);
+    if (parsed is Map<String, dynamic>) {
+      final name = parsed['name']?.toString().trim() ?? '';
+      if (name.isNotEmpty) return name;
+    }
     return '';
   }
 
@@ -107,7 +129,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     try {
       final cleanJson = text.replaceAll(RegExp(r'//.*$', multiLine: true), '');
-      final parsed = jsonDecode(cleanJson);
+      final parsed = safeDecode(cleanJson);
       if (parsed is! Map<String, dynamic>) throw const FormatException();
 
       final name = parsed['name']?.toString().trim() ?? '';
@@ -251,7 +273,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: Text(l10n.settings_forwardSms, style: _switchStyle),
                   contentPadding: _switchTilePadding,
                   value: _forwardSms,
-                  onChanged: (bool value) async {
+                  onChanged: (value) async {
                     if (value && !await getSmsReceivePermission(openSettings: true)) return;
                     _forwardSms = value;
                     _onSettingChanged();
@@ -262,7 +284,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: Text(l10n.settings_forwardCalls, style: _switchStyle),
                   contentPadding: _switchTilePadding,
                   value: _forwardCalls,
-                  onChanged: (bool value) async {
+                  onChanged: (value) async {
                     if (value && !await getPhonePermission(openSettings: true)) return;
                     _forwardCalls = value;
                     _onSettingChanged();
@@ -270,10 +292,46 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 const Divider(height: 1),
                 SwitchListTile(
+                  title: Text(l10n.settings_forwardPushes, style: _switchStyle),
+                  contentPadding: _switchTilePadding,
+                  value: _forwardPushes,
+                  onChanged: (value) async {
+                    if (value) {
+                      _waitingForPushPermission = true;
+                      if (!await getNotificationListenerPermission(openSettings: true)) return;
+                      _waitingForPushPermission = false;
+                    }
+                    _forwardPushes = value;
+                    _onSettingChanged();
+                  },
+                ),
+                if (_forwardPushes) ...[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(14, 0, 14, 7),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Transform.translate(
+                        offset: const Offset(0, -4),
+                        child: OutlinedButton.icon(
+                          icon: const Icon(Icons.apps_rounded, applyTextScaling: true),
+                          label: Text(l10n.pushed_apps, maxLines: 1, overflow: TextOverflow.ellipsis),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const PushedAppsPage()),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+                const Divider(height: 1),
+                SwitchListTile(
                   title: Text(l10n.settings_notifyLowBattery, style: _switchStyle),
                   contentPadding: _switchTilePadding,
                   value: _notifyLowBattery,
-                  onChanged: (bool value) {
+                  onChanged: (value) {
                     _notifyLowBattery = value;
                     _onSettingChanged();
                   },
@@ -283,7 +341,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: Text(l10n.settings_notifyChargerState, style: _switchStyle),
                   contentPadding: _switchTilePadding,
                   value: _notifyChargerState,
-                  onChanged: (bool value) {
+                  onChanged: (value) {
                     _notifyChargerState = value;
                     _onSettingChanged();
                   },
@@ -308,7 +366,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: Text(l10n.settings_enableForeground, style: _switchStyle),
                   contentPadding: _switchTilePadding,
                   value: _enableForeground,
-                  onChanged: (bool value) async {
+                  onChanged: (value) async {
                     if (value && !await getNotificationPermission(openSettings: true)) return;
                     _enableForeground = value;
                     _onSettingChanged();
@@ -319,7 +377,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: Text(l10n.settings_attachSimInfo, style: _switchStyle),
                   contentPadding: _switchTilePadding,
                   value: _attachSimInfo,
-                  onChanged: (bool value) async {
+                  onChanged: (value) async {
                     if (value && !await getSimInfoPermission(openSettings: true)) return;
                     _attachSimInfo = value;
                     _onSettingChanged();
@@ -398,7 +456,7 @@ class _SettingsPageState extends State<SettingsPage> {
               helperText: l10n.settings_deviceLabelInfo,
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
-            onChanged: (String value) => _onSettingChanged(),
+            onChanged: (value) => _onSettingChanged(),
           ),
         ],
       ),

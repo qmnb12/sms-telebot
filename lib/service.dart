@@ -26,6 +26,10 @@ Future<bool> getSimInfoPermission({bool openSettings = false}) async {
   return requestPermissionNative('android.permission.READ_PHONE_STATE', openSettings: openSettings);
 }
 
+Future<bool> getNotificationListenerPermission({bool openSettings = false}) async {
+  return requestNotificationListenerPermissionNative(openSettings: openSettings);
+}
+
 Future<bool> getPhonePermission({bool openSettings = false}) async {
   final statusBeforeRequest = await Permission.phone.status;
   final status = await Permission.phone.request();
@@ -83,11 +87,11 @@ void launchURL(String url) {
   launchUrl(uri);
 }
 
-Map<String, dynamic>? safeDecode(dynamic source) {
+T? safeDecode<T>(dynamic source) {
   if (source == null || source is! String || source.isEmpty) return null;
   try {
     final decoded = jsonDecode(source);
-    if (decoded is Map<String, dynamic>) return decoded;
+    if (decoded is T) return decoded;
     return null;
   } catch (_) {
     return null;
@@ -270,6 +274,27 @@ Future<bool> requestPermissionNative(String permission, {bool openSettings = fal
     return granted;
   } catch (_) {
     return false;
+  }
+}
+
+Future<bool> requestNotificationListenerPermissionNative({bool openSettings = false}) async {
+  try {
+    final result = await _mainChannel.invokeMethod<bool>('requestNotificationListenerPermission', {
+      'openSettings': openSettings,
+    });
+    return result ?? false;
+  } catch (_) {
+    return false;
+  }
+}
+
+Future<List<Map<String, String>>> getInstalledAppsNative() async {
+  try {
+    final result = await _mainChannel.invokeMethod<List<dynamic>>('getInstalledApps');
+    if (result == null) return [];
+    return result.map((item) => Map<String, String>.from(item as Map)).toList();
+  } catch (_) {
+    return [];
   }
 }
 

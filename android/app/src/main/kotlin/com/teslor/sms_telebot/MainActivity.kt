@@ -4,6 +4,8 @@
 package com.teslor.sms_telebot
 
 import android.content.Intent
+import android.provider.Settings
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
@@ -68,19 +70,15 @@ class MainActivity : FlutterActivity() {
                                     )
                                 )
 
-                                withContext(Dispatchers.Main) {
-                                    result.success(sendResult.toMap())
-                                }
+                                result.success(sendResult.toMap())
                             } catch (e: Exception) {
-                                withContext(Dispatchers.Main) {
-                                    result.success(
-                                        SendProviderResult(
-                                            isSuccess = false,
-                                            code = ResultCode.UNEXPECTED_ERROR,
-                                            info = e.message ?: "Unexpected error"
-                                        ).toMap()
-                                    )
-                                }
+                                result.success(
+                                    SendProviderResult(
+                                        isSuccess = false,
+                                        code = ResultCode.UNEXPECTED_ERROR,
+                                        info = e.message ?: "Unexpected error"
+                                    ).toMap()
+                                )
                             }
                         }
                     }
@@ -188,6 +186,46 @@ class MainActivity : FlutterActivity() {
                     "requestPermission" -> {
                         permissionRequestManager.request(call.argument("permission"), result)
                     }
+                    "requestNotificationListenerPermission" -> {
+                        val isGranted = NotificationManagerCompat.getEnabledListenerPackages(this).contains(packageName)
+                        val openSettings = call.argument<Boolean>("openSettings") ?: false
+                        if (!isGranted && openSettings) {
+                            try {
+                                val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS).apply {
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }
+                                startActivity(intent)
+                            } catch (e: Exception) {
+                                AppLog.e(TAG, "Failed to open notification listener settings", e)
+                            }
+                        }
+                        result.success(isGranted)
+                    }
+
+                    "getInstalledApps" -> {
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            try {
+                                val pm = packageManager
+                                val intent = Intent(Intent.ACTION_MAIN).apply {
+                                    addCategory(Intent.CATEGORY_LAUNCHER)
+                                }
+                                val appsInfo = pm.queryIntentActivities(intent, 0)
+                                val appList = appsInfo.mapNotNull { appInfo ->
+                                    val pkg = appInfo.activityInfo.packageName
+                                    if (pkg == packageName) return@mapNotNull null
+                                    val name = appInfo.loadLabel(pm).toString()
+                                    mapOf("packageName" to pkg, "name" to name)
+                                }
+                                .distinctBy { it["packageName"] }
+                                .sortedBy { (it["name"] ?: "").lowercase() }
+
+                                result.success(appList)
+                            } catch (e: Exception) {
+                                AppLog.e(TAG, "Failed to get installed apps", e)
+                                result.success(emptyList<Map<String, String>>())
+                            }
+                        }
+                    }
 
                     "exportLogs" -> exportLogs(result)
 
@@ -222,13 +260,11 @@ class MainActivity : FlutterActivity() {
 
                 withContext(Dispatchers.Main) {
                     startActivity(Intent.createChooser(intent, null))
-                    result.success(true)
                 }
+                result.success(true)
             } catch (e: Exception) {
                 AppLog.e(TAG, "Failed to export logs", e)
-                withContext(Dispatchers.Main) {
-                    result.error("log_export_failed", e.message, null)
-                }
+                result.success(false)
             }
         }
     }
