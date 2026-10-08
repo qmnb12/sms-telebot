@@ -11,10 +11,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/**
- * Receives device status update (low battery, charger connected/disconnected)
- * and schedules its processing via WorkManager.
- */
 class DeviceStatusReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {

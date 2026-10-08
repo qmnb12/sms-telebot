@@ -14,9 +14,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/**
- * Receives SMS and schedules its processing via WorkManager.
- */
 class SmsReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -26,15 +23,13 @@ class SmsReceiver : BroadcastReceiver() {
         if (permission != PackageManager.PERMISSION_GRANTED) return
 
         val dbManager = DbManager.getInstance(context)
-        if (!dbManager.getBoolSetting("isRunning")) return
-        if (!dbManager.getBoolSetting("forwardSms")) return
-        val attachSimInfo = dbManager.getBoolSetting("attachSimInfo")
+        val settings = dbManager.getSettings(listOf("isRunning", "forwardSms", "attachSimInfo"))
+        if (settings["isRunning"] != "1" || settings["forwardSms"] != "1") return
 
-        // Call goAsync() to avoid blocking UI thread when reading/writing DB
         val pendingResult = goAsync()
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                processSms(context, intent, attachSimInfo)
+                processSms(context, intent, settings["attachSimInfo"] == "1")
             } catch (e: Exception) {
                 AppLog.e("SmsReceiver", "Failed to process incoming SMS", e)
             } finally {

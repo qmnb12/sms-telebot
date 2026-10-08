@@ -94,7 +94,7 @@ object MessageHelpers {
             else -> ""
         }
         val emoji = when (type) {
-            "sms" -> "💬" "call" -> "📞" "sys" -> "🔋" else -> "🤖"
+            "sms" -> "💬" "call" -> "📞" "push" -> "🔔" "sys" -> "🔋" else -> "🤖"
         }
 
         val defaultFormattedMessage = when (provider) {
@@ -194,10 +194,11 @@ object MessageHelpers {
     fun previewFormat(sets: Map<String, String>): List<Map<String, String>> {
         val previews = mutableListOf<Map<String, String>>()
         for (provider in SendProviderId.list) {
-            for (type in listOf("sms", "call", "sys")) {
+            for (type in listOf("sms", "call", "push", "sys")) {
                 val (sender, text) = when (type) {
                     "sys" -> sets["l10nBattery"].orEmpty() to "${sets["l10nLowBattery"].orEmpty()}: 15%"
                     "call" -> "+12345678900" to ""
+                    "push" -> "Gmail" to sets["l10nHello"].orEmpty()
                     else -> "+12345678900" to sets["l10nHello"].orEmpty()
                 }
                 val simInfo = if (type == "sms" || type == "call") "SIM 1 / Carrier" else null

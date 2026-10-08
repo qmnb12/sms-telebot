@@ -9,8 +9,7 @@ import android.content.Intent
 import androidx.core.content.ContextCompat
 
 /**
- * Listens for system boot completion and app updates.
- * Restarts ForegroundService if it was enabled.
+ * Listens for system boot completion and app updates; restarts FGS if it was enabled.
  */
 class BootReceiver : BroadcastReceiver() {
 

@@ -20,9 +20,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/**
- * Main activity that handles method calls from Flutter.
- */
 class MainActivity : FlutterActivity() {
 
     companion object {

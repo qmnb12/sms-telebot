@@ -14,9 +14,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/**
- * Receives incoming call and schedules its processing via WorkManager.
- */
 class CallReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -32,19 +29,17 @@ class CallReceiver : BroadcastReceiver() {
         if (statePerm != PackageManager.PERMISSION_GRANTED || logPerm != PackageManager.PERMISSION_GRANTED) return
 
         val dbManager = DbManager.getInstance(context)
-        if (!dbManager.getBoolSetting("isRunning")) return
-        if (!dbManager.getBoolSetting("forwardCalls")) return
-        val attachSimInfo = dbManager.getBoolSetting("attachSimInfo")
+        val settings = dbManager.getSettings(listOf("isRunning", "forwardCalls", "attachSimInfo"))
+        if (settings["isRunning"] != "1" || settings["forwardCalls"] != "1") return
 
         @Suppress("DEPRECATION")
         val incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
         if (incomingNumber.isNullOrBlank()) return
 
-        // Call goAsync() to avoid blocking UI thread when reading/writing DB
         val pendingResult = goAsync()
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                processCall(context, intent, incomingNumber, attachSimInfo)
+                processCall(context, intent, incomingNumber, settings["attachSimInfo"] == "1")
             } catch (e: Exception) {
                 AppLog.e("CallReceiver", "Failed to process incoming call", e)
             } finally {

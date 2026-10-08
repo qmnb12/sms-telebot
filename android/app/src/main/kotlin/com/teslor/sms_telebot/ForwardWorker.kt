@@ -21,9 +21,6 @@ import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 
-/**
- * Background worker that forwards an incoming message via configured providers.
- */
 class ForwardWorker(
     appContext: Context,
     params: WorkerParameters
@@ -64,7 +61,7 @@ class ForwardWorker(
         val messageId = inputData.getString("message_id") ?: return@withContext Result.failure()
         val ruleIds = inputData.getIntArray("rule_ids") ?: return@withContext Result.failure()
 
-        // Check if message exists and was not already sent
+        // Check if the message exists and was not already sent
         val messageData = dbManager.getMessageById(messageId) ?: return@withContext Result.failure()
         val shouldBeProcessed =
             messageData.status == SendStatus.RECEIVED || messageData.status == SendStatus.FAILED_RETRY

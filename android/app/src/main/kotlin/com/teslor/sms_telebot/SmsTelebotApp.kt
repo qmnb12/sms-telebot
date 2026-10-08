@@ -10,7 +10,7 @@ import android.content.pm.ApplicationInfo
 import androidx.core.content.ContextCompat
 
 /**
- * Application class that registers the device status receiver.
+ * Application class; registers the device status receiver.
  */
 class SmsTelebotApp : Application() {
 

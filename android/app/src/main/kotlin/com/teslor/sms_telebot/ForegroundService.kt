@@ -13,9 +13,6 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 
-/**
- * Runs permanently in the background and provides a notification.
- */
 class ForegroundService : Service() {
 
     companion object {
