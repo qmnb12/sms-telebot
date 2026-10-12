@@ -18,6 +18,7 @@ class _PushedAppsPageState extends State<PushedAppsPage> {
   final TextEditingController _searchController = TextEditingController();
 
   List<Map<String, String>> _allApps = [];
+  final Map<String, Map<String, dynamic>> _savedApps = {};
   Set<String> _initialPackages = {};
   Set<String> _selectedPackages = {};
 
@@ -41,13 +42,17 @@ class _PushedAppsPageState extends State<PushedAppsPage> {
   Future<void> _loadData() async {
     final appState = context.read<AppState>();
 
-    Set<String> savedPackages = {};
-    if (appState.pushedAppsJson.isNotEmpty) {
-      final decoded = safeDecode(appState.pushedAppsJson);
-      if (decoded is List) savedPackages = decoded.map((p) => p.toString()).toSet();
+    _savedApps.clear();
+    final decoded = appState.pushedAppsJson.isNotEmpty ? safeDecode(appState.pushedAppsJson) : null;
+    if (decoded is List) {
+      for (final item in decoded) {
+        final pkg = item['pkg']?.toString() ?? '';
+        if (pkg.isNotEmpty) _savedApps[pkg] = Map<String, dynamic>.from(item);
+      }
     }
-
+    final savedPackages = _savedApps.keys.toSet();
     final apps = await getInstalledAppsNative();
+
     if (!mounted) return;
     setState(() {
       _allApps = apps;
@@ -74,12 +79,19 @@ class _PushedAppsPageState extends State<PushedAppsPage> {
   }
 
   Future<void> _saveApps() async {
-    final list = _selectedPackages.toList()..sort();
-    final jsonString = list.isEmpty ? '' : jsonEncode(list);
+    final pushedApps = [
+      for (final pkg in _selectedPackages.toList()..sort()) _savedApps[pkg] ?? {'pkg': pkg},
+    ];
+    await context.read<AppState>().updatePushedApps(
+      pushedApps.isEmpty ? '' : jsonEncode(pushedApps)
+    );
 
-    await context.read<AppState>().updatePushedApps(jsonString);
     if (!mounted) return;
     setState(() {
+      _savedApps..clear()..addAll({
+        for (final item in pushedApps) item['pkg']: item,
+      });
+
       _initialPackages = Set<String>.from(_selectedPackages);
       _isInputChanged = false;
       _saveResult = true;
@@ -160,7 +172,7 @@ class _PushedAppsPageState extends State<PushedAppsPage> {
             const Divider(height: 1),
             Expanded(
               child: filteredApps.isEmpty
-                ? Center( child: Text(l10n.pushed_notFound))
+                ? Center(child: Text(l10n.pushed_notFound))
                 : ListView.separated(
                   itemCount: filteredApps.length,
                   separatorBuilder: (context, index) => const Divider(height: 1),

@@ -101,7 +101,7 @@ class _AppViewState extends State<AppView> {
         actions:[
           IconButton(
             icon: Icon(Icons.help_outline_rounded),
-            onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => HelpPage())); },
+            onPressed: () { Navigator.of(context).push(MaterialPageRoute(builder: (context) => HelpPage())); },
           ),
         ],
       ),

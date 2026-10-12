@@ -134,12 +134,11 @@ class _MessagesPageState extends State<MessagesPage> {
     final textStyleMuted = TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: theme.colorScheme.onSurface.withAlpha(150));
 
     final type = (msg['type'] ?? 'sms').toString();
-    final isSms = type == 'sms';
-    final titleIcon = isSms ? Icons.messenger : (type == 'call' ? Icons.call : Icons.battery_4_bar);
+    final titleIcon = _messageIcon(type);
     final titleIconColor = CustomColor.messageType(type);
     final sender = msg['sender']?.toString() ?? '';
     final bodyText = msg['body']?.toString() ?? '';
-    final receivedDate = DateFormat('dd.MM HH:mm').format(DateTime.fromMillisecondsSinceEpoch(msg['received_at']));
+    final receivedDate = DateFormat('dd/MM HH:mm').format(DateTime.fromMillisecondsSinceEpoch(msg['received_at']));
     final status = (msg['status'] as num?)?.toInt() ?? _statusReceived;
     final sentAt = (msg['sent_at'] as num?)?.toInt();
     final lastAttemptAt = (msg['last_attempt_at'] as num?)?.toInt();
@@ -200,6 +199,14 @@ class _MessagesPageState extends State<MessagesPage> {
         ),
       ),
     );
+  }
+
+  static IconData _messageIcon(String type) {
+    return switch (type) {
+      'sms' => Icons.messenger, 'call' => Icons.call,
+      'sys' => Icons.battery_4_bar, 'push' => Icons.notifications,
+      _ => Icons.info,
+    };
   }
 
   ({IconData icon, Color color}) _statusVisual(ThemeData theme, int status) {

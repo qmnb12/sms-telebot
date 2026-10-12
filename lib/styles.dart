@@ -15,6 +15,7 @@ class CustomColor {
     return switch (type) {
       'sms' => const Color(0xFF1A73E8),
       'call' => const Color(0xFF34A853),
+      'push' => const Color(0xFF7B1FA2),
       'sys' => const Color(0xFFFF8F00),
       _ => Colors.blueGrey,
     };

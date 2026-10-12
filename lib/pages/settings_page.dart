@@ -225,6 +225,17 @@ class _SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver
     }
   }
 
+  Future<void> _togglePushes([bool? targetValue]) async {
+    final value = targetValue ?? !_forwardPushes;
+    if (value) {
+      _waitingForPushPermission = true;
+      if (!await getNotificationListenerPermission(openSettings: true)) return;
+      _waitingForPushPermission = false;
+    }
+    _forwardPushes = value;
+    _onSettingChanged();
+  }
+
   PopupMenuItem<_FormatMenuAction> buildMenuItem(_FormatMenuAction value, IconData icon, String text, {bool enabled = true}) {
     return PopupMenuItem(
       value: value,
@@ -291,30 +302,25 @@ class _SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver
                   },
                 ),
                 const Divider(height: 1),
-                SwitchListTile(
+                ListTile(
                   title: Text(l10n.settings_forwardPushes, style: _switchStyle),
                   contentPadding: _switchTilePadding,
-                  value: _forwardPushes,
-                  onChanged: (value) async {
-                    if (value) {
-                      _waitingForPushPermission = true;
-                      if (!await getNotificationListenerPermission(openSettings: true)) return;
-                      _waitingForPushPermission = false;
-                    }
-                    _forwardPushes = value;
-                    _onSettingChanged();
-                  },
-                ),
-                if (_forwardPushes) ...[
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(14, 0, 14, 7),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Transform.translate(
-                        offset: const Offset(0, -4),
-                        child: OutlinedButton.icon(
-                          icon: const Icon(Icons.apps_rounded, applyTextScaling: true),
-                          label: Text(l10n.pushed_apps, maxLines: 1, overflow: TextOverflow.ellipsis),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (_forwardPushes)
+                        IconButton(
+                          icon: const Icon(Icons.apps_rounded, size: 23, applyTextScaling: true),
+                          tooltip: l10n.pushed_apps,
+                          style: IconButton.styleFrom(
+                            shape: const CircleBorder(),
+                            splashFactory: NoSplash.splashFactory,
+                            side: BorderSide(
+                              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+                              width: 1.0,
+                            ),
+                          ),
+                          visualDensity: VisualDensity.compact,
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -322,10 +328,11 @@ class _SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver
                             );
                           },
                         ),
-                      ),
-                    ),
+                      Switch(value: _forwardPushes, onChanged: _togglePushes),
+                    ],
                   ),
-                ],
+                  onTap: _togglePushes,
+                ),
                 const Divider(height: 1),
                 SwitchListTile(
                   title: Text(l10n.settings_notifyLowBattery, style: _switchStyle),
