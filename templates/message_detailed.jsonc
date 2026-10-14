@@ -5,7 +5,7 @@
 
 {
   "name": "Detailed",
-  "version": 1,
+  "version": 2,
   "templates": {
     "telegram": {
       "sms": {
@@ -15,6 +15,10 @@
       "call": {
         "title": "☎️ <b>$sender</b>",
         "message": "<i>$date(dd MMM yyyy, HH:mm:ss)</i>\n<i>$device (SIM $slot, $carrier)</i>"
+      },
+      "push": {
+        "title": "📢 <b>$sender</b>",
+        "message": "$text\n<i>$date(dd MMM yyyy, HH:mm:ss)</i>\n<i>$device</i>"
       },
       "sys": {
         "title": "📱 <b>$sender</b>",
@@ -30,6 +34,10 @@
         "title": "☎️ $sender",
         "message": "$date(dd MMM yyyy, HH:mm:ss)\n$device (SIM $slot, $carrier)"
       },
+      "push": {
+        "title": "📢 $sender",
+        "message": "$text\n$date(dd MMM yyyy, HH:mm:ss)\n$device"
+      },
       "sys": {
         "title": "📱 $sender",
         "message": "$text\n$date(dd MMM yyyy, HH:mm:ss)\n$device"
@@ -44,6 +52,10 @@
         "title": "Call: $sender",
         "message": "$date(dd MMM yyyy, HH:mm:ss)\n$device (SIM $slot, $carrier)\n☎️ $sender"
       },
+      "push": {
+        "title": "$sender",
+        "message": "$text\n\n$date(dd MMM yyyy, HH:mm:ss)\n$device\n📢 $sender"
+      },
       "sys": {
         "title": "$sender",
         "message": "$text\n\n$date(dd MMM yyyy, HH:mm:ss)\n📱 $device"
@@ -57,6 +69,10 @@
       "call": {
         "title": "Call: $sender",
         "message": "$date(dd MMM yyyy, HH:mm:ss)\n$device (SIM $slot, $carrier)"
+      },
+      "push": {
+        "title": "$sender",
+        "message": "$text\n$date(dd MMM yyyy, HH:mm:ss)\n$device"
       },
       "sys": {
         "title": "$sender",

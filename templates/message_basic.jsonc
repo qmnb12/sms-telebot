@@ -10,15 +10,16 @@
 // Incoming event types:
 //   sms - incoming SMS
 //   call - incoming call
+//   push - push notification
 //   sys - system event (low battery or charger status)
 //
 // All destinations and event types are optional; the default format is used if one is omitted.
 //
 // Template variables:
-//   $sender - sender's phone number or name for SMS and calls; localized label for system/battery events
-//   $text - original SMS text or generated system message; empty for calls
-//   $slot - SIM slot number (1 or 2) for SMS and calls; empty if "Attach SIM info" is disabled
-//   $carrier - SIM carrier name for SMS and calls; empty if "Attach SIM info" is disabled
+//   $sender - sender's phone number or name for SMS/calls; app name and notification title for pushes; localized label for system events
+//   $text - original SMS/notification text or generated system message; empty for calls
+//   $slot - SIM slot number (1 or 2) for SMS/calls; empty if "Attach SIM info" is disabled
+//   $carrier - SIM carrier name for SMS/calls; empty if "Attach SIM info" is disabled
 //   $date() - event date and time formatted with Java DateTimeFormatter, e.g. $date(yyyy-MM-dd HH:mm)
 //   $device - device label; empty if unset
 //
@@ -27,7 +28,7 @@
 
 {
   "name": "Basic", // format name in the app settings
-  "version": 1, // schema version; do not change this
+  "version": 2, // schema version; do not change this
   "templates": {
     "common": {
       "sms": {
@@ -37,6 +38,10 @@
       "call": {
         "title": "Call: $sender",
         "message": "$date(dd/MM HH:mm)"
+      },
+      "push": {
+        "title": "$sender",
+        "message": "$date(dd/MM HH:mm)\n$text"
       },
       "sys": {
         "title": "$sender",
@@ -51,6 +56,10 @@
       "call": {
         "title": "Call: $sender",
         "message": "$date(dd/MM HH:mm), $sender"
+      },
+      "push": {
+        "title": "$sender",
+        "message": "$text\n\n$date(dd/MM HH:mm), $sender"
       },
       "sys": {
         "title": "$sender",
