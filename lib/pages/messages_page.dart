@@ -35,21 +35,23 @@ class _MessagesPageState extends State<MessagesPage> {
     }
 
     setState(() => _isStarting = true);
-    bool canStart = true;
-    if (appState.forwardSms && !await getSmsReceivePermission()) canStart = false;
-    if (appState.forwardCalls && !await getPhonePermission()) canStart = false;
-    if (appState.enableForeground && !await getNotificationPermission()) canStart = false;
+    try {
+      bool canStart = true;
+      if (appState.forwardSms && !await getSmsReceivePermission()) canStart = false;
+      if (appState.forwardCalls && !await getPhonePermission()) canStart = false;
+      if (appState.enableForeground && !await getNotificationPermission()) canStart = false;
 
-    if (!canStart) {
-      setState(() => _isStarting = false);
-      if (context.mounted) context.showErrorSnack(l10n.warn_permissionsRequired);
-      return;
-    }
+      if (!canStart) {
+        if (context.mounted) context.showErrorSnack(l10n.warn_permissionsRequired);
+        return;
+      }
 
-    final result = await appState.startProcessing();
-    setState(() => _isStarting = false);
-    if (!result.isSuccess && context.mounted) {
-      context.showErrorSnack(getLocalizedError(l10n, result.code));
+      final result = await appState.startProcessing();
+      if (!result.isSuccess && context.mounted) {
+        context.showErrorSnack(getLocalizedError(l10n, result.code));
+      }
+    } finally {
+      if (mounted) setState(() => _isStarting = false);
     }
   }
 
@@ -92,12 +94,9 @@ class _MessagesPageState extends State<MessagesPage> {
       bottomNavigationBar: ActionButton(
         label: appState.isRunning ? l10n.msg_stop : l10n.msg_start,
         isSuccess: null,
-        onPressed: (appState.canStartProcessing || appState.isRunning)
-            ? () {
-                if (_isStarting) return;
-                _handleAction(context, appState, l10n);
-              }
-            : null,
+        onPressed: (appState.canStartProcessing || appState.isRunning) && !_isStarting
+          ? () => _handleAction(context, appState, l10n)
+          : null,
       ),
     );
   }
@@ -139,11 +138,9 @@ class _MessagesPageState extends State<MessagesPage> {
     final sender = msg['sender']?.toString() ?? '';
     final bodyText = msg['body']?.toString() ?? '';
     final receivedDate = DateFormat('dd/MM HH:mm').format(DateTime.fromMillisecondsSinceEpoch(msg['received_at']));
-    final status = (msg['status'] as num?)?.toInt() ?? _statusReceived;
-    final sentAt = (msg['sent_at'] as num?)?.toInt();
-    final lastAttemptAt = (msg['last_attempt_at'] as num?)?.toInt();
-    final activityAt = sentAt ?? lastAttemptAt;
-    final activityDate = activityAt == null ? null : DateFormat('dd.MM HH:mm').format(DateTime.fromMillisecondsSinceEpoch(activityAt));
+    final status = msg['status'] ?? _statusReceived;
+    final activityAt = msg['sent_at'] ?? msg['last_attempt_at'];
+    final activityDate = activityAt == null ? null : DateFormat('dd/MM HH:mm').format(DateTime.fromMillisecondsSinceEpoch(activityAt));
     final statusVisual = _statusVisual(theme, status);
 
     return Card(
