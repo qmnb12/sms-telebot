@@ -323,7 +323,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get help_appInfo =>
-      'Encaminhamento inteligente de SMS, notificações de chamadas recebidas e status da bateria.';
+      'Encaminhamento inteligente de SMS e chamadas recebidas, notificações push e alertas de status da bateria.';
 
   @override
   String get help_info => 'Introdução';
@@ -342,7 +342,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get help_opts_01 =>
-      'Primeiro, selecione os eventos que você quer encaminhar. Enquanto o app estiver em execução, uma mensagem é gerada e enviada para cada evento conforme as regras definidas.';
+      'Primeiro, selecione os eventos que deseja rastrear; para notificações push, selecione os aplicativos correspondentes. O aplicativo gera e encaminha mensagens para cada evento com base em suas regras.';
 
   @override
   String get help_opts_02 =>
@@ -457,11 +457,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get consent_item_01 =>
-      'Dependendo dos recursos ativados, o app pode receber dados sobre SMS e chamadas recebidos e enviar SMS para os números indicados por você.';
+      'O aplicativo funciona estritamente de acordo com as suas configurações. Dependendo da sua escolha, ele pode ler SMS recebidos, chamadas ou notificações, além de enviar SMS para os números que você indicar.';
 
   @override
   String get consent_item_02 =>
-      'Os dados são enviados apenas para os serviços que você configurou. Não há servidores ocultos nem análises.';
+      'Os dados são enviados apenas para os endereços web dos servidores definidos em suas regras de encaminhamento. O aplicativo não utiliza canais de comunicação ocultos nem coleta dados analíticos.';
 
   @override
   String get consent_item_03 =>
@@ -471,7 +471,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get consent_details => 'Saiba mais: ';
 
   @override
-  String get consent_privacyPolicy => 'política de privacidade';
+  String get consent_privacyPolicy => 'Política de privacidade';
 
   @override
   String get error_badRequest =>

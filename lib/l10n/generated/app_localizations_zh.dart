@@ -320,7 +320,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get help_about => '关于';
 
   @override
-  String get help_appInfo => '智能转发短信，并提供来电通知与电池状态提醒。';
+  String get help_appInfo => '来电短信、推送通知及电池状态警报的智能转发。';
 
   @override
   String get help_info => '简介';
@@ -335,7 +335,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get help_info_03 => '消息会按已启用规则转发。若发生连接错误（例如无网络），系统会自动重试。';
 
   @override
-  String get help_opts_01 => '首先选择需要转发的事件。应用运行时，会按已设置规则为每个事件生成并发送消息。';
+  String get help_opts_01 =>
+      '首先，选择您要追踪的事件；对于推送通知，请选择相应的应用程序。应用将根据您的规则，为每个事件生成并转发消息。';
 
   @override
   String get help_opts_02 =>
@@ -432,10 +433,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get consent_welcome => '欢迎！\n继续操作即表示您确认已阅读以下信息：';
 
   @override
-  String get consent_item_01 => '根据您启用的功能，应用可能会接收来电和短信数据，并向您指定的号码发送短信。';
+  String get consent_item_01 =>
+      '本应用严格按照您的设置运行。根据配置，它可以读取收到的短信、电话或通知，并向您指定的号码发送短信。';
 
   @override
-  String get consent_item_02 => '数据只会发送到您自行配置的服务。应用没有隐藏的服务器，也不包含分析功能。';
+  String get consent_item_02 =>
+      '数据仅发送至您在转发规则中指定的服务器网址。本应用不会使用任何隐藏的通信渠道，也不会收集分析数据。';
 
   @override
   String get consent_item_03 => '只有在启用相应功能时，应用才会请求敏感权限。';

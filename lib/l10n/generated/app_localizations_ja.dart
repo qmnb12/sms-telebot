@@ -321,7 +321,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get help_about => 'このアプリについて';
 
   @override
-  String get help_appInfo => 'SMSのスマート転送、着信通知、バッテリー状態通知に対応しています。';
+  String get help_appInfo => '着信SMS・通話、プッシュ通知、およびバッテリー状態アラートのスマート転送。';
 
   @override
   String get help_info => 'イントロ';
@@ -339,7 +339,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get help_opts_01 =>
-      'まず、転送したいイベントを選択します。アプリの動作中は、設定したルールに従ってイベントごとにメッセージが作成され送信されます。';
+      'まず、追跡したいイベントを選択してください。プッシュ通知については、対象となるアプリを選択します。アプリは設定されたルールに基づき、各イベントに対してメッセージを生成し、転送します。';
 
   @override
   String get help_opts_02 =>
@@ -449,11 +449,11 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get consent_item_01 =>
-      '有効にした機能に応じて、アプリは受信SMSや着信のデータを取得し、指定した番号にSMSを送信することがあります。';
+      '本アプリは、ユーザーが設定したルールに従って厳密に動作します。設定により、受信したSMS、通話、通知の読み取り、および指定した番号へのSMS送信を行う場合があります。';
 
   @override
   String get consent_item_02 =>
-      'データは、ご自身で設定したサービスにのみ送信されます。隠れたサーバーや分析機能はありません。';
+      'データは、転送ルールで指定されたサーバーのURLにのみ送信されます。本アプリが隠れた通信チャネルを使用したり、アナリティクスを収集したりすることはありません。';
 
   @override
   String get consent_item_03 => '機密性の高い権限は、対応する機能を有効にした場合のみ要求されます。';

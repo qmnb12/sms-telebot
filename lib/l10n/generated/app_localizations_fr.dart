@@ -327,7 +327,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get help_appInfo =>
-      'Transfert intelligent des SMS, notifications d\'appels entrants et état de la batterie.';
+      'Transfert intelligent des SMS et appels entrants, des notifications push et des alertes d\'état de la batterie.';
 
   @override
   String get help_info => 'Introduction';
@@ -346,7 +346,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get help_opts_01 =>
-      'Commencez par sélectionner les événements à transférer. Pendant l\'exécution de l\'application, un message est généré et envoyé pour chaque événement selon les règles définies.';
+      'Tout d\'abord, sélectionnez les événements que vous souhaitez suivre ; pour les notifications push, sélectionnez les applications concernées. L\'application génère et transfère des messages pour chaque événement en fonction de vos règles.';
 
   @override
   String get help_opts_02 =>
@@ -461,11 +461,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get consent_item_01 =>
-      'Selon les fonctions activées, l\'application peut recevoir des données sur les SMS et appels entrants, et envoyer des SMS aux numéros que vous indiquez.';
+      'L\'application fonctionne strictement selon vos paramètres. Selon votre configuration, elle peut lire les SMS entrants, les appels ou les notifications, et envoyer des SMS aux numéros que vous avez spécifiés.';
 
   @override
   String get consent_item_02 =>
-      'Les données sont transmises uniquement aux services que vous avez vous-même configurés. Il n\'y a ni serveurs cachés ni analyse.';
+      'Les données ne sont transmises qu\'aux adresses web des serveurs indiquées dans vos règles de transfert. L\'application n\'utilise aucun canal de communication caché et ne collecte aucune donnée analytique.';
 
   @override
   String get consent_item_03 =>
@@ -475,7 +475,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get consent_details => 'En savoir plus : ';
 
   @override
-  String get consent_privacyPolicy => 'politique de confidentialité';
+  String get consent_privacyPolicy => 'Politique de confidentialité';
 
   @override
   String get error_badRequest =>

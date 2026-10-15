@@ -70,22 +70,15 @@ class _ConsentContent extends StatelessWidget {
           Text(l10n.consent_item_03, style: itemStyle),
 
           const SizedBox(height: 15),
-          Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              Text(l10n.consent_details, style: textTheme.bodyMedium?.copyWith(fontSize: 13, fontWeight: FontWeight.w600)),
-              InkWell(
-                onTap: () => launchURL('$appLink/blob/main/PRIVACY_POLICY.md'),
-                child: Text(
-                  l10n.consent_privacyPolicy,
-                  style: textTheme.bodyMedium?.copyWith(
-                    fontSize: 13,
-                    height: 1.3,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
+          InkWell(
+            onTap: () => launchURL('$appLink/blob/main/PRIVACY_POLICY.md'),
+            child: Text(
+              l10n.consent_privacyPolicy,
+              style: textTheme.bodyMedium?.copyWith(
+                fontSize: 13, fontWeight: FontWeight.w500, height: 1.3,
+                decoration: TextDecoration.underline,
               ),
-            ],
+            ),
           ),
         ],
       ),

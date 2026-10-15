@@ -326,7 +326,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get help_appInfo =>
-      'Intelligente Weiterleitung von SMS sowie Benachrichtigungen zu eingehenden Anrufen und zum Akkustatus.';
+      'Intelligente Weiterleitung von eingehenden SMS und Anrufen, Push-Benachrichtigungen und Akkustand-Warnungen.';
 
   @override
   String get help_info => 'Einführung';
@@ -345,7 +345,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get help_opts_01 =>
-      'Wählen Sie zuerst die Ereignisse aus, die Sie weiterleiten möchten. Während die App läuft, wird für jedes Ereignis entsprechend den festgelegten Regeln eine Nachricht erstellt und gesendet.';
+      'Wählen Sie zuerst die Ereignisse aus, die Sie verfolgen möchten; für Push-Benachrichtigungen wählen Sie die entsprechenden Apps aus. Die App erstellt und leitet Nachrichten für jedes Ereignis basierend auf Ihren Regeln weiter.';
 
   @override
   String get help_opts_02 =>
@@ -460,11 +460,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get consent_item_01 =>
-      'Je nach aktivierten Funktionen kann die App Daten über eingehende SMS und Anrufe empfangen sowie SMS an die von Ihnen angegebenen Nummern senden.';
+      'Die App arbeitet ausschließlich nach Ihren Vorgaben. Je nach Konfiguration kann sie eingehende SMS, Anrufe oder Benachrichtigungen auslesen sowie SMS an von Ihnen festgelegte Nummern senden.';
 
   @override
   String get consent_item_02 =>
-      'Daten werden nur an die von Ihnen selbst eingerichteten Dienste übertragen. Es gibt keine versteckten Server und keine Analyse.';
+      'Daten werden nur an die in Ihren Weiterleitungsregeln angegebenen Server-URLs gesendet. Die App nutzt keine versteckten Kommunikationskanäle und erhebt keine Analysedaten.';
 
   @override
   String get consent_item_03 =>

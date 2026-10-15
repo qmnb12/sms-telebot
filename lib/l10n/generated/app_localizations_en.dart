@@ -323,7 +323,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_appInfo =>
-      'Smart forwarding of SMS, notifications for incoming calls and battery status.';
+      'Smart forwarding of incoming SMS and calls, push notifications, and battery status alerts.';
 
   @override
   String get help_info => 'Intro';
@@ -342,7 +342,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help_opts_01 =>
-      'First, select the events you want to track. The app generates and forwards messages for each event based on your rules.';
+      'First, select the events you wish to track; for push notifications, select the relevant apps. The app generates and forwards messages for each event based on your rules.';
 
   @override
   String get help_opts_02 =>
@@ -457,11 +457,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get consent_item_01 =>
-      'Depending on the features you enable, the app may receive data about incoming SMS and calls and send SMS to the numbers you specify.';
+      'The app operates strictly according to your settings. Depending on the features you enable, it may read incoming SMS, calls, or notifications, and send SMS to your specified numbers.';
 
   @override
   String get consent_item_02 =>
-      'Data is sent only to the services you configure yourself. No hidden servers or analytics.';
+      'Data is transmitted only to the server URLs defined in your forwarding rules. The app does not use hidden communication channels and does not collect any analytics.';
 
   @override
   String get consent_item_03 =>
@@ -471,7 +471,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get consent_details => 'Learn more: ';
 
   @override
-  String get consent_privacyPolicy => 'privacy policy';
+  String get consent_privacyPolicy => 'Privacy Policy';
 
   @override
   String get error_badRequest =>
