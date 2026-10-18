@@ -1,17 +1,15 @@
 # :outbox_tray: SMS Telebot
 
-[![Android](https://img.shields.io/badge/Android-34A853?style=flat&logo=android&logoColor=white)](https://developer.android.com/)
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue)](https://www.gnu.org/licenses/agpl-3.0)
-[![Privacy Policy](https://img.shields.io/badge/Privacy%20Policy-green)](./PRIVACY_POLICY.md)
+[![Get It on](https://img.shields.io/badge/IzzyOnDroid-00d3ff?style=flat&logo=android&label=Get%20It%20on&logoColor=white&labelColor=589606)](https://apt.izzysoft.de/packages/com.teslor.sms_telebot)
+[![Privacy Policy](https://img.shields.io/badge/Privacy%20Policy-589606)](./PRIVACY_POLICY.md)
 
-SMS Telebot is an Android app that automatically forwards incoming SMS to Telegram bots, ntfy topics, email addresses via SMTP, or phone numbers via outgoing SMS.
-It can also notify you about incoming calls, low battery, and charger connection status changes.
+SMS Telebot is an Android app that automatically forwards incoming SMS, calls, push notifications, low battery alerts, and charger connection status changes to Telegram bots, ntfy topics, SMTP email addresses, or phone numbers via SMS.
 
 ## :star: Features
 
 * **Flexible Forwarding Rules**: Create as many forwarding rules as you need and route events to a Telegram bot, an ntfy server, an SMTP server, or a phone number (via SMS). You can add multiple destinations!
 
-* **Event Selection**: Choose exactly what to forward: incoming SMS, incoming calls, low battery alerts, or charger connection updates.
+* **Event Selection**: Choose exactly what to forward: incoming SMS or calls, pushes, low battery alerts, or charger connection updates.
 
 * **Custom Filters**: Set up filters based on sender or message text inside each rule to control which events are forwarded. Support for regular expressions is included.
 
@@ -48,11 +46,6 @@ You can establish filters to control which messages are forwarded based on the s
 * **Blacklist Mode**: Messages will not be forwarded if they match any filter.
 
 To verify if a specific message will be forwarded, simply enter the sender and/or message in the provided fields and check the results.
-
-## :rocket: What's Next?
-
-* Push notifications forwarding
-* Proxy settings
 
 ## :memo: Important Notes
 

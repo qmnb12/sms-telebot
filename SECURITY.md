@@ -1,6 +1,6 @@
 # Security Policy & Information
 
-**SMS Telebot** is an open-source, user-configured automation tool. The core functionality involves monitoring device events (SMS, Calls, Battery) and forwarding them to a destination (Telegram API, ntfy server, SMTP server, or another phone number via outgoing SMS) defined exclusively by the user.  
+**SMS Telebot** is an open-source, user-configured automation tool. The core functionality involves monitoring device events (SMS, calls, pushes, charger/battery status) and forwarding them to a destination (Telegram API, ntfy server, SMTP server, or another phone number via outgoing SMS) defined exclusively by the user.  
 Due to this behavioral pattern, some generic heuristic scanners may occasionally flag the application as riskware.
 
 Please note the following regarding **SMS Telebot** architecture:

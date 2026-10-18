@@ -2,8 +2,8 @@ SMS Telebot forwards phone events to Telegram bots, ntfy topics, email addresses
 
 Stay informed when your phone receives:
 
-- Incoming SMS
-- Incoming calls
+- Incoming SMS or calls
+- Push notifications
 - Low battery alerts
 - Charger connection status changes
 
