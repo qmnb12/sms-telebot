@@ -310,7 +310,7 @@ class _SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver
                     children: [
                       if (_forwardPushes)
                         IconButton(
-                          icon: const Icon(Icons.apps_rounded, size: 23, applyTextScaling: true),
+                          icon: const Icon(Icons.apps_rounded, size: 22),
                           tooltip: l10n.pushed_apps,
                           style: IconButton.styleFrom(
                             shape: const CircleBorder(),
@@ -442,7 +442,7 @@ class _SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver
                             ),
                             child: const SizedBox(
                               width: 32, height: 32,
-                              child: Icon(Icons.more_vert, size: 20),
+                              child: Icon(Icons.more_vert, size: 22),
                             ),
                           ),
                         ),

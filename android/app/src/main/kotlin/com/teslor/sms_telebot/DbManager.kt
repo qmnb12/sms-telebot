@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.util.Log
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 data class MessageData(val type: String, val sender: String, val body: String, val simInfo: String?, val receivedAt: Long, val attemptCount: Int, val status: Int)
 data class ForwardingRule(val id: Int, val provider: String, val filterMode: Int, val filtersJson: String?)
@@ -193,7 +194,7 @@ class DbManager private constructor(private val mainDbPath: String) {
         }
     }
 
-    // Create a new record and cleanup old messages with 10% probability
+    // Create a new record
     fun insertMessagesHistory(id: String, type: String, sender: String, body: String, simInfo: String?, sourceAt: Long, receivedAt: Long, status: Int = 0): Boolean {
         return withDatabase { db ->
             val values = ContentValues().apply {
@@ -202,9 +203,17 @@ class DbManager private constructor(private val mainDbPath: String) {
             }
             val inserted = db.insertWithOnConflict("messages_history", null, values, SQLiteDatabase.CONFLICT_REPLACE) != -1L
 
-            if (inserted && kotlin.random.Random.nextInt(10) == 0) {
-                val timeLimit = System.currentTimeMillis() - (24 * 60 * 60 * 1000L)
-                db.delete("messages_history", "received_at < ?", arrayOf(timeLimit.toString()))
+            // Cleanup old messages with 5% probability
+            if (inserted && kotlin.random.Random.nextInt(20) == 0) {
+                val now = System.currentTimeMillis()
+                val limitNonPush = now - TimeUnit.DAYS.toMillis(2)
+                val limitPush = now - TimeUnit.DAYS.toMillis(30)
+
+                db.delete(
+                    "messages_history",
+                    "(type != 'push' AND received_at < ?) OR (type = 'push' AND received_at < ?)",
+                    arrayOf(limitNonPush.toString(), limitPush.toString())
+                )
             }
 
             inserted

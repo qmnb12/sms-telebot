@@ -353,7 +353,8 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
 
   bool get canStartProcessing {
     bool hasActiveRules = rules.any((r) => r['is_active'] == 1 && r['config_json'] != null);
-    bool hasActiveEvents = forwardSms || forwardCalls || notifyLowBattery || notifyChargerState;
+    bool hasActiveEvents = forwardSms || forwardCalls
+      || (forwardPushes && pushedAppsJson.isNotEmpty) || notifyLowBattery || notifyChargerState;
     return hasActiveRules && hasActiveEvents;
   }
 

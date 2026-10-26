@@ -179,7 +179,7 @@ class _MessagesPageState extends State<MessagesPage> {
                 Row(
                   children: [
                     Icon(titleIcon, size: 14, color: titleIconColor, applyTextScaling: true),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 6),
                     Expanded(
                       child: Text(
                         sender,

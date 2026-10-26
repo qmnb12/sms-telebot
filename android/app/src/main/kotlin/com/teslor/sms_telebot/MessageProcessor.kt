@@ -14,6 +14,8 @@ import androidx.work.WorkManager
 
 object MessageProcessor {
 
+    private const val TAG = "MessageProcessor"
+
     fun processAndForward(
         context: Context,
         id: String,
@@ -27,25 +29,14 @@ object MessageProcessor {
         val dbManager = DbManager.getInstance(context)
 
         // Check if the message has already been processed in its time window
-        if (dbManager.messageExists(id)) return
+        if (dbManager.messageExists(id)) {
+            AppLog.d(TAG) { "Duplicate skipped (type=$type sender=$sender len=${body.length})" }
+            return
+        }
 
-        // Save message data to messages_history
-        dbManager.insertMessagesHistory(
-            id = id,
-            type = type,
-            sender = sender,
-            body = body,
-            simInfo = simInfo,
-            sourceAt = sourceAt,
-            receivedAt = receivedAt,
-            status = SendStatus.RECEIVED
-        )
-
-        // Get all active forwarding rules
+        // Iterate through active forwarding rules and check filters
         val activeRules = dbManager.getActiveRules()
         val matchedRuleIds = mutableListOf<Int>()
-
-        // Iterate through all rules and check filters
         for (rule in activeRules) {
             if (rule.filterMode == 0) {
                 matchedRuleIds.add(rule.id)
@@ -60,7 +51,22 @@ object MessageProcessor {
                 if (isMatched) matchedRuleIds.add(rule.id)
             }
         }
-        if (matchedRuleIds.isEmpty()) return
+        if (matchedRuleIds.isEmpty()) {
+            AppLog.d(TAG) { "Message filtered out (type=$type sender=$sender len=${body.length})" }
+            return
+        }
+
+        // Save message data to messages_history
+        dbManager.insertMessagesHistory(
+            id = id,
+            type = type,
+            sender = sender,
+            body = body,
+            simInfo = simInfo,
+            sourceAt = sourceAt,
+            receivedAt = receivedAt,
+            status = SendStatus.RECEIVED
+        )
 
         // Check if ALL matched rules require internet connection
         val matchedRules = activeRules.filter { matchedRuleIds.contains(it.id) }

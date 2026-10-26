@@ -622,6 +622,7 @@ object SmtpProvider : SendProvider {
 object SmsProvider : SendProvider {
     override val id: String = SendProviderId.SMS
     override val requiresNetwork: Boolean = false
+    private const val MAX_LEN = 300
 
     override fun send(context: Context, configJson: String, secret: String, type: String, payload: SendProviderPayload): SendProviderResult {
         if (configJson.isBlank()) {
@@ -643,7 +644,7 @@ object SmsProvider : SendProvider {
                 provider = id,
                 type = type,
                 sender = payload.sender,
-                body = payload.body,
+                body = if (payload.body.length > MAX_LEN) payload.body.take(MAX_LEN).trimEnd() + "..." else payload.body,
                 simInfo = payload.simInfo,
                 receivedAt = payload.receivedAt,
                 sets = payload.sets,
