@@ -1,6 +1,6 @@
 const appName = 'SMS Telebot';
 const appLink = 'https://github.com/teslor/sms-telebot';
-const appVersion = '0.8.3';
+const appVersion = '0.8.4';
 const mainChannel = 'sms_telebot/main';
 const filterKeys = [
   'whitelistSenders',

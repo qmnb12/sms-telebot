@@ -1,7 +1,7 @@
 name: sms_telebot
 description: "App to automatically forward incoming SMS messages."
 publish_to: 'none'
-version: 0.8.3+30
+version: 0.8.4+34
 
 environment:
   sdk: '>=3.7.2 <4.0.0'
