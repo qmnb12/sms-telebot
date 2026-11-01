@@ -77,3 +77,7 @@ See the [LICENSE](LICENSE) file for the full text.
 ### Commercial Use & Customization
 
 If you represent a company and wish to use **SMS Telebot** in a closed-source commercial environment without AGPL restrictions, or if you need a **White-Label build**, please contact me for a **Commercial License**.
+
+## Build on Android with Code On The Go
+
+This is a Flutter app, so a plain Android Gradle build does not compile the Dart sources. See [tools/cotg/README.md](tools/cotg/README.md) for the ARM64 Termux + Code On The Go setup and local APK build script.
