@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
 import 'dart:convert';
-import '../../l10n/generated/app_localizations.dart';
+import 'l10n/generated/app_localizations.dart';
 import 'constants.dart';
 
 const MethodChannel _mainChannel = MethodChannel(mainChannel);
